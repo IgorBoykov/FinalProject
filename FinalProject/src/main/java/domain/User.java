@@ -1,16 +1,41 @@
 package domain;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "user")
 public class User {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String email;
 	private String firstName;
 	private String lastName;
-	private UserRole role;
 	private String password;
+	private String passwordConfirm;
+	
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
 
 	public User() {
 
+	}
+	
+	public User(User user) {
+		this.id = user.id;
+		this.email = user.email;
+		this.firstName = user.firstName;
+		this.lastName = user.lastName;
+		this.password = user.password;
+		this.role = user.role;
 	}
 
 	public User(String email, String firstName, String lastName, UserRole role, String password) {
@@ -76,6 +101,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
 	}
 
 	@Override
