@@ -1,6 +1,6 @@
 package domain;
 
-public enum Subject {
+public enum Subjects {
 HISTORY, UKRAINE, ENGLISH, MATHEMATICS, GEOGRAPHY, PHISICS, CHEMISTRY, 
 COMPUTER_SCIENCE
 }
