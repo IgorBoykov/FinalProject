@@ -18,10 +18,6 @@ public class StatementService {
 		statementRepository.save(statement);
 	}
 
-	public Statement findById(Integer id) {
-		return statementRepository.findById(id).get();
-	}
-
 	public List<Statement> findAllStatements() {
 		return statementRepository.findAll();
 	}
