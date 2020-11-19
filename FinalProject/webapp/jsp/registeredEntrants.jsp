@@ -1,29 +1,26 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
-	<meta charset="utf-8">
+<meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
 
-	<title>Entrant Registration</title>
-	
-	<link rel="stylesheet"
+<title>Registered Entrants</title>
+
+<link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="../css/home.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- Font Awesome JS -->
 <script defer
@@ -50,24 +47,24 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
 	integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
 	crossorigin="anonymous"></script>
-</head>
 
-<body>
-	<div class="wrapper">
+</head>
+<div class="wrapper">
 	<!-- Sidebar  -->
 	<nav id="sidebar">
 		<div class="sidebar-header">
-			<h3>University</h3>
+			<h3>Ukrainian University at Toronto</h3>
 		</div>
 
 		<ul class="list-unstyled components">
 			<p>${pageContext.request.userPrincipal.name}</p>
 			<li><a href="/home">Home</a></li>
 			<li><a href="/create-faculty">Create faculty</a></li>
-			<li><a href="/registeredEntrants">Registered Entrants</a></li>
+			<li class="active"><a href="/registeredEntrants">Registered Entrants</a></li>
 		</ul>
 	</nav>
 
+	<!-- Header Content  -->
 	<div id="content">
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -103,46 +100,50 @@
 				</div>
 			</div>
 		</nav>
-
-		<!-- Page Content  -->
-		<form:form method="POST" action="${contextPath}/addMarks"
-			enctype="multipart/form-data">
-			<table>
+		
+		<c:if test="${not empty registeredEntrants}">
+			<table style="width: 100%; border: 2px solid black;"">
 				<tr>
-					<th>Enter your marks and upload image:</th>
+					<th>Photo</th>
+					<th>First name</th>
+					<th>Last name</th>
+					<th>Email</th>
+					<th>Faculty name</th>
+					<th colspan="4">Marks</th>
+					<th>Action</th>
 				</tr>
-
-				<c:forEach items="${registeredEntrant.faculty.subjects}"
-					var="currentSubject">
+				<c:forEach items="${registeredEntrants}" var="currentRegisteredEntrant">
 					<tr>
-						<td>${currentSubject}</td>
-						<td><input type="number" name="marks" /></td>
+						<td rowspan="2"><img src="data:image/png;base64,${currentRegisteredEntrant.encodedEntrantImage}" width="80" height="80" /></td>
+						<td rowspan="2">${currentRegisteredEntrant.user.firstName}</td>
+						<td rowspan="2">${currentRegisteredEntrant.user.lastName}</td>
+						<td rowspan="2">${currentRegisteredEntrant.user.email}</td>
+						<td rowspan="2">${currentRegisteredEntrant.faculty.name}</td>
+						
+						<c:forEach items="${currentRegisteredEntrant.faculty.subjects}" var="currentSubject">
+							<td>${currentSubject}</td>
+						</c:forEach>
+						
+						<td rowspan="2">
+							<form:form method="POST" action="${contextPath}/entrantSubmiting">						
+								<input type="hidden" name="facultyId" value="${currentRegisteredEntrant.faculty.id}" />
+								<input type="hidden" name="userId" value="${currentRegisteredEntrant.user.id}" />
+								<input type="hidden" name="entrantId" value="${currentRegisteredEntrant.id}" />
+								<button type="submit">Submit</button>
+							</form:form>
+						</td>
+					</tr>
+					
+					<tr>
+						<c:forEach items="${currentRegisteredEntrant.marks}" var="currentMark">
+							<td>${currentMark}</td>
+						</c:forEach>
 					</tr>
 				</c:forEach>
-
-				<tr>
-					<td><input type="hidden" name="facultyId"
-						value="${registeredEntrant.faculty.id}" /></td>
-					<td><input type="hidden" name="userEmail"
-						value="${registeredEntrant.user.email}" /></td>
-				</tr>
-
-				<tr>
-					<td>Upload your photo:</td>
-					<td><input type="file" name="image" /></td>
-				</tr>
-
-				<tr>
-					<td><input type="submit" value="Register" /></td>
-				</tr>
-
 			</table>
-
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" />
-		</form:form>
-
+		</c:if>
 	</div>
+	
 </div>
 <script type="text/javascript" src="../js/home.js"></script>
 </body>

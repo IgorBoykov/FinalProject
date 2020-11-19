@@ -61,11 +61,10 @@
 			<p>${pageContext.request.userPrincipal.name}</p>
 			<li><a href="/home">Home</a></li>
 			<li class="active"><a href="/create-faculty">Create faculty</a></li>
-			<li><a href="/rating">Rating</a></li>
+			<li><a href="/registeredEntrants">Registered Entrants</a></li>
 		</ul>
 	</nav>
 
-	<!-- Header Content  -->
 	<div id="content">
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -102,23 +101,38 @@
 			</div>
 		</nav>
 
+		<c:forEach var="element" items="${List1}" varStatus="status">
+			<p>${element}${List2[status.index]}
+		</c:forEach>
+
+		<h2>Rating of faculty with name ${faculty.name}</h2>
+
 		<c:if test="${not empty statements}">
-			<table>
+
+			<table style="width: 75%">
 				<tr>
 					<th>First name</th>
-					<th>Last name</th>
-					<th>Email</th>
-					<th>Faculty name</th>
-					<th>Marks</th>
+					<th>Second name</th>
+					<th colspan="4">Marks</th>
+					<th>Is Accepted?</th>
 				</tr>
-				<c:forEach items="${statements}" var="currentStatement">
+				<c:forEach items="${statements}" var="currentStatement"
+					varStatus="status">
 					<tr>
-						<td>${currentStatement.user.firstName}</td>
-						<td>${currentStatement.user.lastName}</td>
-						<td>${currentStatement.user.email}</td>
-						<td>${currentStatement.faculty.name}</td>
+						<td rowspan="2">${users[status.index].firstName}</td>
+						<td rowspan="2">${users[status.index].lastName}</td>
 
-						<td>${currentStatement.faculty.subjects}<br>${currentStatement.marks}</td>
+						<c:forEach items="${faculty.subjects}" var="currentSubject">
+							<td>${currentSubject}</td>
+						</c:forEach>
+
+						<td rowspan="2">${accepting[status.index]}</td>
+					</tr>
+					<tr>
+						<c:forEach items="${currentStatement.statementMarks}"
+							var="currentStatementMark">
+							<td>${currentStatementMark}</td>
+						</c:forEach>
 					</tr>
 				</c:forEach>
 			</table>
