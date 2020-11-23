@@ -53,7 +53,7 @@
 	<!-- Sidebar  -->
 	<nav id="sidebar">
 		<div class="sidebar-header">
-			<h3>Ukrainian University at Toronto</h3>
+			<h3>University</h3>
 		</div>
 
 		<ul class="list-unstyled components">
@@ -114,7 +114,7 @@
 				</tr>
 				<c:forEach items="${registeredEntrants}" var="currentRegisteredEntrant">
 					<tr>
-						<td rowspan="2"><img src="data:image/png;base64,${currentRegisteredEntrant.encodedEntrantImage}" width="80" height="80" /></td>
+						<td rowspan="2"><img src="data:image/png;base64,${currentRegisteredEntrant.encodedEntrantImage}" width="70" height="70" /></td>
 						<td rowspan="2">${currentRegisteredEntrant.user.firstName}</td>
 						<td rowspan="2">${currentRegisteredEntrant.user.lastName}</td>
 						<td rowspan="2">${currentRegisteredEntrant.user.email}</td>

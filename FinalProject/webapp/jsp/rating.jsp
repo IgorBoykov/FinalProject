@@ -1,5 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -60,8 +62,10 @@
 		<ul class="list-unstyled components">
 			<p>${pageContext.request.userPrincipal.name}</p>
 			<li><a href="/home">Home</a></li>
+			<security:authorize access="hasRole('ADMIN')">
 			<li class="active"><a href="/create-faculty">Create faculty</a></li>
 			<li><a href="/registeredEntrants">Registered Entrants</a></li>
+			</security:authorize>
 		</ul>
 	</nav>
 
