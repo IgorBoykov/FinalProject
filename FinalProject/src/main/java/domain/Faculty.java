@@ -68,7 +68,7 @@ public class Faculty {
 		this.students = students;
 	}
 
-	public List<Subjects> getSubjecst() {
+	public List<Subjects> getSubjects() {
 		return subjects;
 	}
 
